@@ -1,6 +1,6 @@
 # AVS-OAM
 
-Minimal core scripts for the paper idea: Cartesian acoustic vector sensors (pressure plus particle velocity) improve sparse-aperture acoustic OAM reception compared with pressure-only sampling.
+Core scripts for the paper idea: Cartesian acoustic vector sensors (pressure plus particle velocity) improve sparse-aperture acoustic OAM reception compared with pressure-only sampling.
 
 This trimmed repository intentionally omits the manuscript folder, formal figure folders, LaTeX build files, old plotting scripts, and large intermediate outputs. It keeps only the scripts needed to reproduce the main numerical mechanisms.
 
