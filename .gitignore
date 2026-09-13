@@ -9,3 +9,8 @@ __pycache__/
 *.tiff
 *.npz
 *.npy
+
+# The static research explorer publishes its traceable data and image assets.
+!docs/data/*.csv
+!docs/data/*.npz
+!docs/assets/*.png

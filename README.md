@@ -1,6 +1,23 @@
 # AVS-OAM
 
-Compact Python reference implementation for Cartesian acoustic-vector-sensor (AVS) reception of sparse-aperture acoustic orbital-angular-momentum (OAM) signals.
+**Sound, with direction.** Cartesian acoustic-vector-sensor (AVS) reception for sparse-aperture acoustic orbital-angular-momentum (OAM) communication.
+
+[![Sound field, co-located pressure and velocity channels, and reconstructed payload](docs/assets/overview.png)](https://brianzhu1999.github.io/AVS-OAM/)
+
+### [Open the interactive research explorer →](https://brianzhu1999.github.io/AVS-OAM/)
+
+Explore the field, inspect the receiver, and compare the recovered information. The project website is in English and includes:
+
+- **OAM field explorer:** four modes, phase playback and transverse-velocity arrows from the manuscript's complex field arrays.
+- **Co-located receiver:** selectable sensing points, four complex channels and the corresponding receiving-matrix rows.
+- **Codeword geometry:** linked selection across three reception strategies, projection multiplicities and full-space nearest-neighbor distances.
+- **Performance explorer:** original SNR, offset, distance, finite-pilot and hardware-error sweeps, with discrete settings and CSV downloads.
+- **Payload recovery:** shared magnification, bit-error overlays and symbol-order playback of the actual decoded image arrays.
+- **Two downloadable MP4 animations** and a **15-figure atlas**, with source provenance and asset-generation scripts.
+
+<p align="center"><a href="https://brianzhu1999.github.io/AVS-OAM/#field"><img src="docs/assets/field-preview.gif" width="280" alt="One slow cycle of the normalized OAM mode 2 pressure field with transverse velocity arrows"></a></p>
+
+*Normalized instantaneous pressure and transverse velocity for ℓ = 2. The interactive page gives the axes, display scales and physical settings. [Field video](https://brianzhu1999.github.io/AVS-OAM/assets/field-cycle.mp4) · [Recovery video](https://brianzhu1999.github.io/AVS-OAM/assets/recovery.mp4)*
 
 The code accompanies the study *Acoustic Vector-Sensor Reception for Orbital-Angular-Momentum Sound Communication* and provides executable examples of the finite-ring forward model, pressure-equivalent particle-velocity channels, receiving-matrix analysis, BPSK detection, receiver-offset mismatch, and a gapped-aperture payload.
 
@@ -55,6 +72,20 @@ The examples use the same column-normalization convention for comparing observat
 ## Reproducibility
 
 The examples use explicit NumPy random seeds. Numerical settings such as frame counts and scan grids are defined directly in each example script.
+
+The root-level examples are compact model demonstrations. The website's quantitative performance curves use the archived formal manuscript runs; each source table records its normalization, whitening, calibration and repetition settings. See [data and model conventions](docs/DATA.md) and the [source manifest](docs/data/source_manifest.json).
+
+To rebuild the website assets and run the scientific data checks:
+
+```bash
+python -m pip install -r tools/requirements-site.txt
+python tools/export_site_data.py
+python tools/export_media.py
+python tools/verify_site_data.py
+python -m http.server 8767 --directory docs
+```
+
+Open `http://127.0.0.1:8767/`; stop the local server with Ctrl+C. GitHub Pages serves the `docs/` directory. The static site has no backend or external JavaScript dependency.
 
 ## Citation
 

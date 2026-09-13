@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Explore acoustic orbital angular momentum communication with co-located pressure and particle-velocity reception. Interactive fields, codeword geometry, simulation data and image recovery.">
+  <meta name="theme-color" content="#f7f8fa">
+  <title>AVS–OAM · Sound, with direction</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+<a class="skip" href="#field">Skip to the explorers</a>
+<header class="site-header"><a class="wordmark" href="#">AVS<span>–</span>OAM <small>RESEARCH EXPLORER</small></a>
+  <nav aria-label="Main navigation"><a href="#reception">Reception</a><a href="#geometry">Geometry</a><a href="#performance">Performance</a><a href="#payload">Recovery</a><a class="repo-link" href="https://github.com/BrianZhu1999/AVS-OAM">GitHub ↗</a></nav>
+</header>
+<main>
+<section class="hero section" id="field" aria-labelledby="hero-title">
+  <div class="hero-copy"><p class="eyebrow">ACOUSTIC ORBITAL ANGULAR MOMENTUM</p><h1 id="hero-title">Sound,<br>with direction.</h1>
+  <p class="lead">Read more of a sound field at the same receiving point.</p>
+  <p>An acoustic vector sensor observes pressure and three particle-velocity components. Together, these observations improve the separation of OAM communication signals at sparse receiving apertures.</p>
+  <div class="hero-links"><a class="button primary" href="#reception">Explore the receiver <span>↓</span></a><a class="text-link" href="#sources">Data &amp; reproduction ↗</a></div>
+  <p class="paper-title">Companion to <cite>Acoustic vector-sensor reception for orbital-angular-momentum sound communication</cite></p>
+  <div class="hero-facts"><div><strong>4</strong><span>co-located channels</span></div><div><strong>3</strong><span>reception strategies</span></div><div><strong>1</strong><span>shared acoustic field</span></div></div></div>
+  <div class="field-panel panel"><div class="panel-heading"><span class="eyebrow">01 / THE SOUND FIELD</span><span class="tag">Fig. 2 data</span></div>
+    <canvas id="field-canvas" aria-label="Instantaneous acoustic pressure field with optional transverse velocity arrows"></canvas>
+    <div class="field-toolbar"><label>OAM mode <select id="field-mode"><option value="1">ℓ = 1</option><option value="2" selected>ℓ = 2</option><option value="4">ℓ = 4</option><option value="7">ℓ = 7</option></select></label><label class="check"><input id="velocity" type="checkbox" checked> Velocity arrows</label><button id="field-play" type="button">Play phase</button></div>
+    <label class="slider-label" for="field-phase">Phase <output id="phase-value">0°</output></label><input id="field-phase" type="range" min="0" max="360" value="0" step="1">
+    <p class="caption">Re[p exp(−iωt)] and transverse velocity, slowed to a 12 s display cycle. The physical carrier is 3430 Hz; z = 1.2 m. The dashed ring has radius 12 cm.</p>
+    <details><summary>Display normalization &amp; source</summary><p>Pressure is scaled separately for each mode by its 99.5th-percentile amplitude. The two velocity components share a separate scale based on their joint magnitude. Colors are clipped to ±1. This view shows spatial structure; use the source arrays for absolute amplitudes. The displayed grid samples every third point of the original 301 × 301 grid.</p><a href="data/field_samples.npz" download>Download complex field samples · NPZ</a></details>
+  </div>
+</section>
+
+<section class="section" id="reception" aria-labelledby="reception-title">
+  <div class="section-intro"><p class="eyebrow">02 / ONE POINT, MORE OBSERVATIONS</p><h2 id="reception-title">Pressure gives a value.<br>Velocity adds direction.</h2><p>Choose a receiving point and watch its rows in the receiving matrix. All four channels occupy the same physical position.</p></div>
+  <div class="receiver-layout"><div class="panel"><div class="panel-heading"><h3>Five points on one aperture</h3><span class="tag">R = 12 cm</span></div><canvas id="receiver-canvas" aria-label="Five selectable co-located acoustic vector sensors on a circular aperture"></canvas><label class="row-label">Receiving point <select id="receiver-select" aria-label="Receiving point"></select></label><p class="caption">S₄ = {−2, −1, 1, 2} · K = 5 · z = 1.2 m</p></div>
+    <div class="receiver-detail"><div class="control-line"><label>Observation strategy <select id="receiver-strategy"><option value="0">Pressure only</option><option value="1">Transverse AVS</option><option value="2" selected>Full AVS</option></select></label><label>Probe mode <select id="probe-mode"><option value="0">ℓ = −2</option><option value="1">ℓ = −1</option><option value="2" selected>ℓ = 1</option><option value="3">ℓ = 2</option></select></label></div>
+      <div id="channel-readouts" class="channel-readouts"></div><p class="caption">Complex channel values for a unit source-weight amplitude. ṽ = ρ₀c₀v puts velocity in pressure-equivalent units; these values share one physical scale.</p>
+      <div class="matrix-header"><h3>The effective receiving matrix</h3><output id="matrix-shape"></output></div><div class="matrix-scroll"><table id="receiver-matrix"><caption class="sr-only">Magnitude of each effective matrix entry, with selected receiver rows highlighted</caption><thead><tr><th scope="col">Channel / point</th><th scope="col">ℓ = −2</th><th scope="col">ℓ = −1</th><th scope="col">ℓ = 1</th><th scope="col">ℓ = 2</th></tr></thead><tbody></tbody></table></div>
+    </div></div>
+  <div class="explanation-strip"><p><strong>Physical observations</strong><br>y = As + n; rows are grouped by component: p, ṽₓ, ṽᵧ, ṽz.</p><p><strong>Common noise model</strong><br>For isotropic ambient noise, each velocity component has one third of the pressure-channel noise variance.</p><p><strong>Effective matrix</strong><br>Normalize received mode power, then whiten velocity rows by √3. No column renormalization follows whitening.</p></div>
+  <p class="source-note">Finite-ring model: 16 sources, 3430 Hz, source and receiver radii 0.12 m. <a href="data/receiver_matrix.npz" download>Raw complex matrix</a> · <a href="https://github.com/BrianZhu1999/AVS-OAM/blob/main/avs_oam_core.py">Forward-model source ↗</a></p>
+</section>
+
+<section class="section geometry-section" id="geometry" aria-labelledby="geometry-title"><div class="section-intro"><p class="eyebrow">03 / FROM SIGNALS TO CODEWORDS</p><h2 id="geometry-title">See the separation.</h2><p>Four BPSK streams form 16 candidate symbol vectors. Select one vector to compare its nearest neighbors under three observation strategies.</p></div>
+  <div class="control-line"><label>BPSK vector <select id="codeword-select"></select></label><p id="codeword-label" class="mono"></p></div>
+  <div class="legend"><span class="pressure">Pressure only</span><span class="transverse">Transverse AVS · p + ṽₓ + ṽᵧ</span><span class="full">Full AVS · p + ṽₓ + ṽᵧ + ṽz</span></div>
+  <div class="geometry-grid" id="geometry-grid"></div>
+  <div class="geometry-note"><strong>A projection is a view of the geometry.</strong><p>These are separate two-dimensional classical multidimensional-scaling (MDS) projections of the same 16 codewords. A “×n” marker counts codewords that overlap in that projection. Distances below each plot are computed in the full whitened observation space. Click an overlapping marker again to cycle through its members.</p></div>
+  <p class="source-note">Appendix Fig. A1 · S₄ = {−2, −1, 1, 2}, K = 5. Global minimum squared distances: 4 (pressure), 4.3043 (transverse), 8.0407 (full AVS). <a href="data/codeword_distances.csv" download>Pairwise distances · CSV</a></p>
+</section>
+
+<section class="section" id="performance" aria-labelledby="performance-title"><div class="section-intro wide"><p class="eyebrow">04 / COMMUNICATION PERFORMANCE</p><h2 id="performance-title">Explore the operating conditions.</h2><p>Compare bit-error rate (BER) using the original simulation tables. Each selectable point is an evaluated setting.</p></div>
+  <div class="performance-panel panel"><div class="performance-controls"><label>Experiment <select id="experiment"><option value="snr">Signal-to-noise ratio</option><option value="offset_nominal">Offset · nominal detector</option><option value="offset_calibrated">Offset · calibrated detector</option><option value="distance">Propagation distance</option><option value="pilots">Pilot calibration</option><option value="hardware">Hardware errors</option></select></label><label>Mode set <select id="task"><option value="two_stream_pm1">S₂ · {−1, 1} · K = 4</option><option value="four_stream_pm1_pm2" selected>S₄ · {−2, −1, 1, 2} · K = 5</option><option value="high_order_four_stream">S_high · {−7, −4, 4, 7} · K = 16</option></select></label></div>
+  <div id="hardware-controls" class="control-line" hidden><label>Error location <select id="error-family"><option value="source">Transmitter</option><option value="sensor">Sensor</option></select></label><label>Amplitude error σA (dB) <select id="amp-error"></select></label><label>SNR (dB) <select id="hw-snr"></select></label></div>
+  <p id="experiment-context" class="context-line"></p><div class="legend"><span class="pressure">Pressure only</span><span class="transverse">Transverse AVS</span><span class="full">Full AVS</span></div>
+  <canvas id="performance-canvas" aria-label="BER comparison curves at the selected experiment and mode set"></canvas>
+  <label class="slider-label" for="point-index"><span id="point-axis-label">Evaluated setting</span><output id="point-value"></output></label><input id="point-index" type="range" min="0" max="1" value="0" step="1">
+  <div class="readout-grid" id="performance-readouts" aria-live="polite"></div>
+  <p class="caption" id="zero-note">Lines connect evaluated points as visual guides. Downward triangles mark zero observed bit errors, displayed at 10⁻⁶ for the logarithmic axis; the readout retains BER = 0.</p>
+  <div class="download-row"><a id="csv-download" class="text-link" href="data/snr.csv" download>Download this experiment · CSV ↓</a><span id="performance-source" class="source-note"></span></div></div>
+  <details class="method-details"><summary>How to read these comparisons</summary><p>Known-mode binary phase-shift keying (BPSK) is detected by maximum likelihood. The formal data use the isotropic AVS noise model: the total noise energy of the three pressure-equivalent velocity components equals that of the pressure channel. Normalization and channel calibration are experiment specific and recorded in each source table.</p><p>The SNR sweep includes the manuscript’s pressure nonorthogonality model (mixing parameter ε = 0.35). Offset experiments compare a nominal detector with a detector calibrated at the actual offset. For distance, the nominal SNR is 0 dB at z₀ = 1.2 m; the normalization is fixed at z₀. Pilot experiments use 5 dB for training and data. The hardware view exposes the sampled phase-error grid for a chosen amplitude error and SNR; it does not interpolate a threshold surface.</p><p>These results use monochromatic free-field propagation and ideal Cartesian sensor responses. They establish the modeled reception mechanism and its dependence on sampling, noise, calibration and hardware errors. Broadband propagation, multipath and measured sensor responses are extensions of this framework.</p></details>
+</section>
+
+<section class="section payload-section" id="payload" aria-labelledby="payload-title"><div class="section-intro wide"><p class="eyebrow">05 / FROM BITS BACK TO AN IMAGE</p><h2 id="payload-title">The difference becomes visible.</h2><p>The same binary image passes through a six-point receiver with a 90° aperture gap. Inspect the recovered pixels with a shared magnifier, or replay the decoded symbols in transmission order.</p></div>
+  <div class="payload-meta"><span>S₄ · four BPSK streams</span><span>K = 6 · gap = 90°</span><span>SNR = 3 dB</span><span>1024 × 768 pixels</span></div>
+  <div class="control-line"><button id="payload-play" type="button">Replay decoding</button><label class="check"><input id="error-mask" type="checkbox"> Highlight bit errors</label><span class="caption">Point at any image to move all four magnifiers.</span></div>
+  <label class="slider-label" for="payload-progress">Decoded channel uses <output id="payload-count">196608 / 196608</output></label><input id="payload-progress" type="range" min="0" max="196608" value="196608" step="1">
+  <div class="payload-grid" id="payload-grid"></div>
+  <div class="zoom-controls"><label>Magnifier x <input id="zoom-x" type="range" min="64" max="960" value="512" step="1"></label><label>Magnifier y <input id="zoom-y" type="range" min="48" max="720" value="360" step="1"></label><span class="caption">Shared 128 × 96 pixel window · nearest-pixel rendering</span></div>
+  <p class="source-note">Fig. 14 · Detector calibrated to the gapped geometry; isotropic AVS noise. The replay follows row-major payload order (4 bits per channel use); screen duration does not represent a measured data rate. <a href="data/payload.npz" download>Original &amp; recovered arrays · NPZ</a> · <a href="data/payload_metrics.csv" download>Metrics · CSV</a></p>
+</section>
+
+<section class="section" id="films" aria-labelledby="films-title"><div class="section-intro"><p class="eyebrow">06 / SHORT VISUAL EXPLANATIONS</p><h2 id="films-title">Two views in motion.</h2><p>Portable animations of the field cycle and the recorded image recovery. Play on demand or download for a presentation.</p></div><div class="film-grid"><figure><video controls playsinline preload="none" poster="assets/field-poster.jpg" aria-label="One slow acoustic field cycle"><source src="assets/field-cycle.mp4" type="video/mp4"></video><figcaption><strong>A field through one cycle</strong><span>ℓ = 2 · pressure and transverse velocity · slow playback</span><a href="assets/field-cycle.mp4" download>Download MP4 ↓</a></figcaption></figure><figure><video controls playsinline preload="none" poster="assets/recovery-poster.jpg" aria-label="Recorded payload reconstruction playback"><source src="assets/recovery.mp4" type="video/mp4"></video><figcaption><strong>A payload through the receiver</strong><span>Original and three reconstructions · symbol-order replay</span><a href="assets/recovery.mp4" download>Download MP4 ↓</a></figcaption></figure></div></section>
+
+<section class="section" id="figures" aria-labelledby="figures-title"><div class="section-intro wide"><p class="eyebrow">07 / FIGURE ATLAS</p><h2 id="figures-title">Follow the complete study.</h2><p>Open a figure to inspect its full screen preview. Figure numbers follow the revised manuscript.</p></div><div class="gallery-grid" id="gallery-grid"></div></section>
+
+<section class="section sources-section" id="sources" aria-labelledby="sources-title"><div class="section-intro"><p class="eyebrow">08 / DATA &amp; REPRODUCTION</p><h2 id="sources-title">From the page<br>to the source.</h2><p>Every numerical explorer is backed by a downloadable matrix, field array or simulation table.</p></div><div class="source-content"><h3>Run the compact reference examples</h3><pre><code>git clone https://github.com/BrianZhu1999/AVS-OAM.git
+cd AVS-OAM
+python -m pip install -r requirements.txt
+python matrix_observability.py
+python known_bpsk_snr.py</code></pre><p>The root-level Python examples expose the finite-ring model and detection workflow. The website’s performance curves use the archived formal manuscript runs, whose normalization, whitening and calibration conditions are specified in the exported tables.</p><h3>Rebuild the website assets</h3><pre><code>python -m pip install -r tools/requirements-site.txt
+python tools/export_site_data.py
+python tools/export_media.py
+python -m http.server 8767 --directory docs</code></pre><div class="resource-links"><a href="https://github.com/BrianZhu1999/AVS-OAM">Code repository ↗</a><a href="data/source_manifest.json">Source manifest &amp; SHA-256 ↗</a><a href="https://github.com/BrianZhu1999/AVS-OAM/tree/main/docs/data">Browse all source data ↗</a><a href="https://github.com/BrianZhu1999/AVS-OAM/blob/main/docs/DATA.md">Data and model conventions ↗</a></div><p class="caption">If you use these materials, cite the accompanying study and this repository. See the repository for current citation information.</p></div></section>
+</main>
+<footer><a class="wordmark" href="#">AVS<span>–</span>OAM</a><p>Acoustic vector-sensor reception for orbital-angular-momentum sound communication</p><a href="https://github.com/BrianZhu1999/AVS-OAM">View source ↗</a></footer>
+<dialog id="figure-dialog"><div class="dialog-bar"><h3 id="dialog-title"></h3><a id="figure-original" target="_blank" rel="noopener">Open image ↗</a><button id="dialog-close" type="button" aria-label="Close figure">Close ×</button></div><img id="dialog-image" alt=""></dialog>
+<noscript><p class="noscript">Enable JavaScript for the interactive explorers. The <a href="https://github.com/BrianZhu1999/AVS-OAM/tree/main/docs/data">source data</a> and <a href="https://github.com/BrianZhu1999/AVS-OAM/tree/main/docs/assets">figures and videos</a> are also directly available.</p></noscript>
+</body></html>
