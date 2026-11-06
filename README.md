@@ -73,7 +73,7 @@ The examples use the same column-normalization convention for comparing observat
 
 The examples use explicit NumPy random seeds. Numerical settings such as frame counts and scan grids are defined directly in each example script.
 
-The root-level examples are compact model demonstrations. The website's quantitative performance curves use the archived formal manuscript runs; each source table records its normalization, whitening, calibration and repetition settings. See [data and model conventions](docs/DATA.md) and the [source manifest](docs/data/source_manifest.json).
+The root-level examples are compact model demonstrations. The website's quantitative performance curves use the recorded study runs; each source table records its normalization, whitening, calibration and repetition settings. See [data and model conventions](docs/DATA.md) and the [source manifest](docs/data/source_manifest.json).
 
 To rebuild the website assets and run the scientific data checks:
 

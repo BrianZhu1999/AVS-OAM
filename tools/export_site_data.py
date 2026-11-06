@@ -58,7 +58,7 @@ def rows(name):
 
 def import_sources(revision, archive):
     base = revision / "code/06_figures_nature_style"
-    manifest = {"description": "Source exports for the revised AVS-OAM manuscript", "sources": []}
+    manifest = {"description": "Source data for the AVS-OAM study", "sources": []}
 
     def record(src, dest, transform="byte-for-byte copy"):
         manifest["sources"].append({"source": src.name, "sha256_source": digest(src),
